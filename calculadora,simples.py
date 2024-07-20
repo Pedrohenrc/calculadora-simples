@@ -15,16 +15,14 @@ def medianormal():
 def mediaponderada ():
     while True:
         try:
-            entrada = list(input("Digite as notas no formato NOTA:PESO separadas por espaço (exemplo: 10:5 9:2):").split())
+            nums = list(float(x) for x in input("Digite as notas e pesos no formato 'nota peso', separados por espaço (exemplo: 9 5 10 3): ").strip().split())
 
-            notas = []
-            pesos = []
+            notas = nums[::2]
+            pesos = nums[1::2]
 
-            for item in entrada:
-                nota, peso = item.split(':')
-                notas.append(float(nota))
-                pesos.append(float(peso))
-            
+            if len(nums) % 2 != 0:
+                raise ValueError("O número de entradas deve ser par, contendo notas e pesos.")
+
             notasp = sum(nota*peso for nota, peso in zip(notas, pesos))
             somaponderada = sum(pesos)
             if somaponderada == 0:
@@ -32,9 +30,9 @@ def mediaponderada ():
             
             resultado = (notasp / somaponderada)
             return resultado
-        except ValueError as e:
+        except ValueError:
             
-            print(f"Entrada inválida. Por favor, digite os dados no formato correto (10:5...).")
+            print(f"Entrada inválida. Por favor, digite os dados no formato correto (10 5...).")
 
 def expressoes(expressao):
     expressao = expressao.replace('.', '*')
@@ -73,18 +71,17 @@ if X == 'sim':
 while True:
     try:
         y = int(input('Insira para onde deseja seguir (Digite 1 para media aritmética, 2 para media ponderada e 3 para calculadora): '))
-        if y < 1 or y > 3:
-            raise ValueError
-        print ('Entrada inválida, por favor escolha um número entre 1 e 3')
+        if y not in [1, 2, 3]:
+            raise ValueError ('Escolha um número entre 1 e 3')
         if y == 1:
             resultado = medianormal()
-            print (f'A média aritmética é {resultado}')
+            print (f'A média aritmética é {resultado:.2f}')
         elif y == 2:
             resultado = mediaponderada()
-            print (f'A média ponderada é {resultado}')
+            print (f'A média ponderada é {resultado:.2f}')
         elif y == 3:
             resultado = calculadora()
-            print (f'O Resultado da expressão é {resultado}')
+            print (f'O Resultado da expressão é {resultado:.2f}')
         z = str(input('Deseja encerrar a calculadora?(Digite "sim" caso deseje) ')).lower().strip()
         if z == 'sim':
             break
